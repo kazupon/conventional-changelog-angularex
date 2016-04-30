@@ -1,7 +1,8 @@
 {
-  "name": "conventional-changelog-angular",
+  "name": "conventional-changelog-angularex",
   "version": "1.1.0",
-  "description": "conventional-changelog angular preset",
+  "private:" true,
+  "description": "conventional-changelog angular preset (:warning: this is experimental)"
   "main": "index.js",
   "scripts": {
     "coverage": "istanbul cover -x test.js _mocha -- -R spec --timeout 30000 && rm -rf ./coverage",
@@ -10,19 +11,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/conventional-changelog/conventional-changelog-angular.git"
+    "url": "git+https://github.com/kazupon/conventional-changelog-angularex.git"
   },
   "keywords": [
     "conventional-changelog",
     "angular",
     "preset"
   ],
-  "author": "Steve Mao",
-  "license": "ISC",
+  "author": "kazuya kawaguchi",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/conventional-changelog/conventional-changelog-angular/issues"
+    "url": "https://github.com/kazupon/conventional-changelog-angularex/issues"
   },
-  "homepage": "https://github.com/conventional-changelog/conventional-changelog-angular#readme",
+  "homepage": "https://github.com/kazupon/conventional-changelog-angularex#readme",
   "devDependencies": {
     "chai": "^3.4.1",
     "conventional-changelog-core": "^1.0.1",
