@@ -16,13 +16,9 @@ try {
 }
 
 var parserOpts = {
-  headerPattern: /^(\w*)(?:\((.*)\))?\: (.*)$/,
-  headerCorrespondence: [
-    'type',
-    'scope',
-    'subject'
-  ],
-  noteKeywords: 'BREAKING CHANGE',
+  headerPattern: /^(?:\:(\w*)\: )?(?:(\w*)(?:\(([\w\$\.\-\* ]*)\))?\: )?(.*)$/,
+  headerCorrespondence: ['emoji', 'type', 'scope', 'subject'],
+  noteKeywords: ['NOTE', 'BREAKING CHANGE', 'DEPRECATED'],
   revertPattern: /^revert:\s([\s\S]*?)\s*This reverts commit (\w*)\./,
   revertCorrespondence: ['header', 'hash']
 };
@@ -43,17 +39,20 @@ function issueUrl() {
 var writerOpts = {
   transform: function(commit) {
     var discard = true;
+    console.log('commit', commit);
 
     commit.notes.forEach(function(note) {
       note.title = 'BREAKING CHANGES';
       discard = false;
     });
 
-    if (commit.type === 'feat') {
-      commit.type = 'Features';
+    if (commit.type === 'new') {
+      commit.type = 'New';
     } else if (commit.type === 'fix') {
       commit.type = 'Bug Fixes';
-    } else if (commit.type === 'perf') {
+    } else if (commit.type === 'improve') {
+      commit.type = 'Improves';
+    } else if (commit.type === 'performance') {
       commit.type = 'Performance Improvements';
     } else if (commit.type === 'revert') {
       commit.type = 'Reverts';
