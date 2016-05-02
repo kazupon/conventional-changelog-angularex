@@ -18,7 +18,7 @@ try {
 var parserOpts = {
   headerPattern: /^(?:\:(\w*)\: )?(?:(\w*)(?:\(([\w\$\.\-\* ]*)\))?\: )?(.*)$/,
   headerCorrespondence: ['emoji', 'type', 'scope', 'subject'],
-  noteKeywords: ['NOTE', 'BREAKING CHANGE', 'DEPRECATED'],
+  noteKeywords: ['NOTE'],
   revertPattern: /^revert:\s([\s\S]*?)\s*This reverts commit (\w*)\./,
   revertCorrespondence: ['header', 'hash']
 };
@@ -38,26 +38,24 @@ function issueUrl() {
 
 var writerOpts = {
   transform: function(commit) {
-    var discard = true;
-    console.log('commit', commit);
-
-    commit.notes.forEach(function(note) {
-      note.title = 'BREAKING CHANGES';
-      discard = false;
-    });
-
     if (commit.type === 'new') {
-      commit.type = 'New';
+      commit.type = 'New Features';
+    } else if (commit.type === 'feature') {
+      commit.type = 'New Features';
     } else if (commit.type === 'fix') {
       commit.type = 'Bug Fixes';
-    } else if (commit.type === 'improve') {
-      commit.type = 'Improves';
+    } else if (commit.type === 'improvement') {
+      commit.type = 'Improvements';
     } else if (commit.type === 'performance') {
-      commit.type = 'Performance Improvements';
+      commit.type = 'Performance Fixes';
+    } else if (commit.type === 'security') {
+      commit.type = 'Security Fixes';
+    } else if (commit.type === 'deprecated') {
+      commit.type = 'Depcreted';
+    } else if (commit.type === 'breaking') {
+      commit.type = 'Breaking changes';
     } else if (commit.type === 'revert') {
       commit.type = 'Reverts';
-    } else if (discard) {
-      return;
     } else if (commit.type === 'docs') {
       commit.type = 'Documentation';
     } else if (commit.type === 'style') {
