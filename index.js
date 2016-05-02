@@ -1,7 +1,6 @@
 'use strict';
+var readFileSync = require('fs').readFileSync;
 var compareFunc = require('compare-func');
-var Q = require('q');
-var readFile = Q.denodeify(require('fs').readFile);
 var resolve = require('path').resolve;
 var path = require('path');
 var pkgJson = {};
@@ -96,21 +95,12 @@ var writerOpts = {
   notesSort: compareFunc
 };
 
-module.exports = Q.all([
-  readFile(resolve(__dirname, 'templates/template.hbs'), 'utf-8'),
-  readFile(resolve(__dirname, 'templates/header.hbs'), 'utf-8'),
-  readFile(resolve(__dirname, 'templates/commit.hbs'), 'utf-8'),
-  readFile(resolve(__dirname, 'templates/footer.hbs'), 'utf-8')
-])
-  .spread(function(template, header, commit, footer) {
+writerOpts.mainTemplate = readFileSync(resolve(__dirname, 'templates/template.hbs'), 'utf-8');
+writerOpts.headerPartial = readFileSync(resolve(__dirname, 'templates/header.hbs'), 'utf-8');
+writerOpts.commitPartial = readFileSync(resolve(__dirname, 'templates/commit.hbs'), 'utf-8');
+writerOpts.footerPartial = readFileSync(resolve(__dirname, 'templates/footer.hbs'), 'utf-8');
 
-    writerOpts.mainTemplate = template;
-    writerOpts.headerPartial = header;
-    writerOpts.commitPartial = commit;
-    writerOpts.footerPartial = footer;
-
-    return {
-      parserOpts: parserOpts,
-      writerOpts: writerOpts
-    };
-  });
+module.exports = {
+  parserOpts: parserOpts,
+  writerOpts: writerOpts
+};
